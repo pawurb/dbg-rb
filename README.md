@@ -1,4 +1,6 @@
 # Ruby dbg! [![Gem Version](https://badge.fury.io/rb/ruby-dbg.svg)](https://badge.fury.io/rb/ruby-dbg) [![GH Actions](https://github.com/pawurb/ruby-dbg/actions/workflows/ci.yml/badge.svg)](https://github.com/pawurb/ruby-dbg/actions)
+
+![Dbg base](https://github.com/pawurb/ruby-dbg/raw/main/dbg_base.png)
  
 Because I wrote: 
 
@@ -74,7 +76,7 @@ RubyDBG.color_code = 36 # light blue
 dbg!("User last", User.last.as_json.slice("id", "slack_id"))
 ```
 
-![Diagnose report](https://github.com/pawurb/ruby-dbg/raw/main/dbg_color.png)
+![Dbg color](https://github.com/pawurb/ruby-dbg/raw/main/dbg_color.png)
 
 If it does not stand out enough, you can enable `dbg!` highlighting:
 
@@ -85,7 +87,7 @@ require "ruby-dbg"
 RubyDBG.highlight!("🎉💔💣🕺🚀🧨🙈🤯🥳🌈🦄")
 ```
 
-![Diagnose report](https://github.com/pawurb/ruby-dbg/raw/main/dbg_emoji.png)
+![Dbg emoji](https://github.com/pawurb/ruby-dbg/raw/main/dbg_emoji.png)
 
 You can also use `RubyDBG.dbg!(*msgs)` directly or wrap it to rename the helper method:
 
