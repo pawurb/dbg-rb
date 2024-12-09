@@ -1,6 +1,6 @@
 # Ruby dbg! [![Gem Version](https://badge.fury.io/rb/ruby-dbg.svg)](https://badge.fury.io/rb/ruby-dbg) [![GH Actions](https://github.com/pawurb/ruby-dbg/actions/workflows/ci.yml/badge.svg)](https://github.com/pawurb/ruby-dbg/actions)
 
-![Dbg base](https://github.com/pawurb/ruby-dbg/raw/main/dbg_base.png)
+![Dbg base](https://github.com/pawurb/ruby-dbg/raw/main/dbg_base3.png)
  
 Because I wrote: 
 
@@ -49,8 +49,9 @@ dbg!(:a, :b)
 Hash values are pretty printed:
 
 ```ruby
-dbg!(User.last.as_json)
-# [web/users_controller.rb:10 {
+user = User.last.as_json
+dbg!(:user)
+# [web/users_controller.rb:10 user = {
 #   "id": 160111,
 #   "team_id": 1,
 #   "pseudonym": "Anonymous-CBWE",
@@ -64,19 +65,21 @@ You can color the output:
 ```ruby
 require "ruby-dbg"
 
-RubyDBG.color_code = 36 # light blue
+RubyDBG.color_code = 35 
 # 31 red 
 # 32 green 
 # 33 yellow 
 # 34 blue 
 # 35 pink 
+# 36 light blue
 ```
 
 ```ruby
-dbg!("User last", User.last.as_json.slice("id", "slack_id"))
+user = User.last.as_json.slice("id", "slack_id")
+dbg!("User last", :user)
 ```
 
-![Dbg color](https://github.com/pawurb/ruby-dbg/raw/main/dbg_color.png)
+![Dbg color](https://github.com/pawurb/ruby-dbg/raw/main/dbg_base3.png)
 
 If it does not stand out enough, you can enable `dbg!` highlighting:
 
@@ -87,7 +90,7 @@ require "ruby-dbg"
 RubyDBG.highlight!("🎉💔💣🕺🚀🧨🙈🤯🥳🌈🦄")
 ```
 
-![Dbg emoji](https://github.com/pawurb/ruby-dbg/raw/main/dbg_emoji.png)
+![Dbg emoji](https://github.com/pawurb/ruby-dbg/raw/main/dbg_emoji2.png)
 
 You can also use `RubyDBG.dbg!(*msgs)` directly or wrap it to rename the helper method:
 
