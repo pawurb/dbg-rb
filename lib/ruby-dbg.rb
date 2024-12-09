@@ -1,139 +1,86 @@
 # frozen_string_literal: true
 
+require "binding_of_caller"
+
 module RubyDBG
-  def dbg(*msgs)
+  @@color_code = nil
+  @@highlight = false
+
+  def self.color_code=(val)
+    @@color_code = val
   end
 
-  def dbg!(*msgs)
-    dbg(*msgs)
-  end
-end
-
-class String
-  def colorize(color_code)
-    "\e[#{color_code}m#{self}\e[0m"
+  def self.highlight!(wrapper = "!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    @@highlight = wrapper
   end
 
-  def red
-    colorize(31)
+  def self.colorize(str, color_code)
+    "\e[#{color_code}m#{str}\e[0m"
   end
 
-  def green
-    colorize(32)
-  end
+  def self.dbg(*objs)
+    loc = caller_locations.first(2).last.to_s
+    matching_loc = loc.match(/.+(rb)\:\d+\:(in)\s/)
+    src = if !matching_loc.nil?
+        matching_loc[0][0..-5]
+      else
+        loc
+      end
+    file, line = src.split(":")
+    file = file.split("/").last(2).join("/")
+    src = "[#{file}:#{line}]"
 
-  def yellow
-    colorize(33)
-  end
-end
+    objs.each_with_index do |obj, i|
+      first = i == 0
+      last = i == (objs.size - 1)
 
-def dbg!(obj)
-  file = __FILE__.split("/").last
-  puts "#{file.red}:#{__LINE__.to_s.red}:#{obj}"
-end
+      val = if obj.is_a?(Symbol)
+          begin
+            if (val = binding.of_caller(3).local_variable_get(obj))
+              val = format_val(val)
 
-module RailsSqliteExtras
-  @@database_url = nil
-
-  QUERIES = %i(
-    compile_options
-    index_size
-    integrity_check
-    pragma
-    sequence_number
-    table_size
-    total_size
-  )
-
-  QUERIES.each do |query_name|
-    define_singleton_method query_name do |options = {}|
-      run_query(
-        query_name: query_name,
-        in_format: options.fetch(:in_format, :display_table),
-      )
-    end
-  end
-
-  def self.run_query(query_name:, in_format:)
-    sql = sql_for(query_name: query_name)
-
-    result = connection.execute(sql)
-
-    self.display_result(
-      result,
-      title: self.description_for(query_name: query_name),
-      in_format: in_format,
-    )
-  end
-
-  def self.display_result(result, title:, in_format:)
-    case in_format
-    when :array
-      result.values
-    when :hash
-      result.to_a
-    when :raw
-      result
-    when :display_table
-      dbg! result
-      headings = if result.count > 0
-          result[0].keys
+              "#{obj} = #{val}"
+            end
+          rescue NameError
+            ":#{obj}"
+          end
         else
-          ["No results"]
+          obj
         end
 
-      values = result.reduce([]) do |agg, val|
-        agg.push([val.fetch("value")])
-        agg
+      val = format_val(val)
+      output = "#{src} #{val}"
+
+      if @@highlight
+        if first
+          output = "#{@@highlight}\n#{output}"
+        end
+
+        if last
+          output = "#{output}\n#{@@highlight}"
+        end
       end
 
-      dbg!(result)
-      dbg! result
-      dbg! headings
+      if @@color_code != nil
+        output = colorize(output, @@color_code)
+      end
 
-      puts Terminal::Table.new(
-        title: title,
-        headings: headings,
-        rows: values,
-      )
-    else
-      raise "Invalid in_format option"
+      puts output
     end
   end
 
-  def self.sql_for(query_name:)
-    File.read(
-      sql_path_for(query_name: query_name)
-    )
-  end
-
-  def self.description_for(query_name:)
-    first_line = File.open(
-      sql_path_for(query_name: query_name)
-    ) { |f| f.readline }
-
-    first_line[/\/\*(.*?)\*\//m, 1].strip
-  end
-
-  def self.sql_path_for(query_name:)
-    File.join(File.dirname(__FILE__), "/rails_sqlite_extras/queries/#{query_name}.sql")
-  end
-
-  def self.connection
-    if (db_url = ENV["RAILS_SQLITE_EXTRAS_DATABASE_URL"])
-      ActiveRecord::Base.establish_connection(db_url).lease_connection
+  def self.format_val(val)
+    if val.nil?
+      "nil"
+    elsif val.is_a?(Hash)
+      JSON.pretty_generate(val)
     else
-      ActiveRecord::Base.connection
+      val
     end
-  end
-
-  def self.database_url=(value)
-    @@database_url = value
-  end
-
-  def self.database_url
-    @@database_url || ENV["RUBY_PG_EXTRAS_DATABASE_URL"] || ENV.fetch("DATABASE_URL")
   end
 end
 
-require "rails_sqlite_extras/railtie" if defined?(Rails)
+def dbg!(*objs)
+  RubyDBG.dbg(*objs)
+  nil
+end
