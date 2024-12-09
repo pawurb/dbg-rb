@@ -1,5 +1,5 @@
-# Ruby dbg!
-
+# Ruby dbg! [![Gem Version](https://badge.fury.io/rb/ruby-dbg.svg)](https://badge.fury.io/rb/ruby-dbg) [![GH Actions](https://github.com/pawurb/ruby-dbg/actions/workflows/ci.yml/badge.svg)](https://github.com/pawurb/ruby-dbg/actions)
+ 
 Because I wrote: 
 
 ```ruby
@@ -19,7 +19,9 @@ too many times already.
 gem "ruby-dbg"
 ```
 
-It adds a global `dbg!` method. You can use it for puts debugging:
+## Usage
+
+Gem adds a global `dbg!` method that you can use for puts debugging:
 
 ```ruby
 require "ruby-dbg"
@@ -29,7 +31,7 @@ dbg!(User.last.id)
 
 ```
 
-It appends relevant caller file and line info to the debug output.
+It appends a caller file and line info to the debug output.
 
 You can use symbols to output local variable names together with their values:
 
@@ -45,7 +47,6 @@ dbg!(:a, :b)
 Hash values are pretty printed:
 
 ```ruby
-
 dbg!(User.last.as_json)
 # [web/users_controller.rb:10 {
 #   "id": 160111,
@@ -55,7 +56,7 @@ dbg!(User.last.as_json)
 # }
 ```
 
-You can enable coloring the output:
+You can color the output:
 
 `config/initializers/ruby_dbg.rb`
 ```ruby
@@ -85,6 +86,14 @@ RubyDBG.highlight!("🎉💔💣🕺🚀🧨🙈🤯🥳🌈🦄")
 ```
 
 ![Diagnose report](https://github.com/pawurb/ruby-dbg/raw/main/dbg_emoji.png)
+
+You can also use `RubyDBG.dbg!(*msgs)` directly or wrap it to rename the helper method:
+
+```ruby
+def dd(*msgs)
+  RubyDBG.dbg!(*msgs)
+end
+```
 
 ## Status
 

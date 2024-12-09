@@ -8,11 +8,10 @@ Gem::Specification.new do |s|
   s.version = RubyDBG::VERSION
   s.authors = ["pawurb"]
   s.email = ["contact@pawelurbanek.com"]
-  s.summary = %q{ Simple debug helper }
-  s.description = %q{ Puts debugging helper, adding file context info and optional coloring. }
+  s.summary = "Simple debuging helper"
+  s.description = "Rust-inspired, puts debugging helper, adding caller info and optional coloring."
   s.homepage = "http://github.com/pawurb/ruby-dbg"
   s.files = `git ls-files`.split("\n").reject { |f| f.match?(/\.db$/) }
-  s.test_files = s.files.grep(%r{^(spec)/})
   s.require_paths = ["lib"]
   s.license = "MIT"
   s.add_dependency "binding_of_caller"

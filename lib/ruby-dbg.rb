@@ -18,7 +18,7 @@ module RubyDBG
     "\e[#{color_code}m#{str}\e[0m"
   end
 
-  def self.dbg(*objs)
+  def self.dbg!(*msgs)
     loc = caller_locations.first(2).last.to_s
     matching_loc = loc.match(/.+(rb)\:\d+\:(in)\s/)
     src = if !matching_loc.nil?
@@ -30,9 +30,9 @@ module RubyDBG
     file = file.split("/").last(2).join("/")
     src = "[#{file}:#{line}]"
 
-    objs.each_with_index do |obj, i|
+    msgs.each_with_index do |obj, i|
       first = i == 0
-      last = i == (objs.size - 1)
+      last = i == (msgs.size - 1)
 
       val = if obj.is_a?(Symbol)
           begin
@@ -67,6 +67,8 @@ module RubyDBG
 
       puts output
     end
+
+    nil
   end
 
   def self.format_val(val)
@@ -80,7 +82,6 @@ module RubyDBG
   end
 end
 
-def dbg!(*objs)
-  RubyDBG.dbg(*objs)
-  nil
+def dbg!(*msgs)
+  RubyDBG.dbg!(*msgs)
 end
