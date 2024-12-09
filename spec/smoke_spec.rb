@@ -6,7 +6,7 @@ require "ostruct"
 
 describe RubyDBG do
   it "variable values" do
-    expect { dbg!("123") }.to output("[spec/smoke_spec.rb:9] 123\n").to_stdout
+    expect { dbg!("123") }.to output("[spec/smoke_spec.rb:9] \"123\"\n").to_stdout
   end
 
   it "binded variables" do
@@ -29,9 +29,9 @@ describe RubyDBG do
     expect { dbg!(:s) }.to output("[spec/smoke_spec.rb:29] s = #<OpenStruct a=1, b=2>\n").to_stdout
   end
 
-  it "label case" do
+  it "multiple msg" do
     s = OpenStruct.new(a: 1, b: 2)
-    expect { dbg!(:s, "other msg") }.to output("[spec/smoke_spec.rb:34] s = #<OpenStruct a=1, b=2>\n[spec/smoke_spec.rb:34] other msg\n").to_stdout
+    expect { dbg!(:s, "other msg") }.to output("[spec/smoke_spec.rb:34] s = #<OpenStruct a=1, b=2>\n[spec/smoke_spec.rb:34] \"other msg\"\n").to_stdout
   end
 
   it "nil" do
@@ -40,11 +40,11 @@ describe RubyDBG do
 
   it "higlight" do
     RubyDBG.highlight!
-    expect { dbg!("123") }.to output("!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n[spec/smoke_spec.rb:43] 123\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n").to_stdout
+    expect { dbg!("123") }.to output("!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n[spec/smoke_spec.rb:43] \"123\"\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n").to_stdout
   end
 
   it "color_code" do
     RubyDBG.color_code = 31
-    expect { dbg!("123") }.to output("\e[31m!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n[spec/smoke_spec.rb:48] 123\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\e[0m\n").to_stdout
+    expect { dbg!(123) }.to output("\e[31m!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n[spec/smoke_spec.rb:48] 123\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\e[0m\n").to_stdout
   end
 end

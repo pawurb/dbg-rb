@@ -45,10 +45,9 @@ module RubyDBG
             ":#{obj}"
           end
         else
-          obj
+          format_val(obj)
         end
 
-      val = format_val(val)
       output = "#{src} #{val}"
 
       if @@highlight
@@ -74,6 +73,8 @@ module RubyDBG
   def self.format_val(val)
     if val.nil?
       "nil"
+    elsif val.is_a?(String)
+      "\"#{val}\""
     elsif val.is_a?(Hash)
       JSON.pretty_generate(val)
     else
