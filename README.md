@@ -69,10 +69,15 @@ RubyDBG.color_code = 36 # light blue
 # 35 pink 
 ```
 
+```ruby
+dbg!("User last", User.last.as_json.slice("id", "slack_id"))
+```
+
 ![Diagnose report](https://github.com/pawurb/ruby-dbg/raw/main/dbg_color.png)
 
 If it does not stand out enough, you can enable `dbg!` highlighting:
 
+`config/initializers/ruby_dbg.rb`
 ```ruby
 require "ruby-dbg"
 
