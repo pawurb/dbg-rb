@@ -75,7 +75,7 @@ module DbgRb
       "nil"
     elsif val.is_a?(String)
       "\"#{val}\""
-    elsif val.is_a?(Hash)
+    elsif val.is_a?(Hash) || val.is_a?(Array)
       JSON.pretty_generate(val)
     else
       val
