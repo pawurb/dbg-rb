@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-module RubyDBG
-  VERSION = "0.1.1"
+module DbgRb
+  VERSION = "0.2.0"
 end

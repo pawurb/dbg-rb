@@ -1,6 +1,6 @@
-# Ruby dbg! [![Gem Version](https://badge.fury.io/rb/ruby-dbg.svg)](https://badge.fury.io/rb/ruby-dbg) [![GH Actions](https://github.com/pawurb/ruby-dbg/actions/workflows/ci.yml/badge.svg)](https://github.com/pawurb/ruby-dbg/actions)
+# dbg! [![Gem Version](https://badge.fury.io/rb/dbg-rb.svg)](https://badge.fury.io/rb/dbg-rb) [![GH Actions](https://github.com/pawurb/dbg-rb/actions/workflows/ci.yml/badge.svg)](https://github.com/pawurb/dbg-rb/actions)
 
-![Dbg base](https://github.com/pawurb/ruby-dbg/raw/main/dbg_base3.png)
+![Dbg base](https://github.com/pawurb/dbg-rb/raw/main/dbg_base3.png)
  
 Because I wrote: 
 
@@ -18,7 +18,7 @@ too many times already.
 
 `Gemfile`
 ```ruby
-gem "ruby-dbg"
+gem "dbg-rb"
 ```
 
 ## Usage
@@ -26,7 +26,7 @@ gem "ruby-dbg"
 Gem adds a global `dbg!` method that you can use for puts debugging:
 
 ```ruby
-require "ruby-dbg"
+require "dbg-rb"
 
 dbg!(User.last.id)
 # [web/user_sessions_controller.rb:37] 1972
@@ -61,11 +61,11 @@ dbg!(:user)
 
 You can color the output:
 
-`config/initializers/ruby_dbg.rb`
+`config/initializers/dbg_rb.rb`
 ```ruby
-require "ruby-dbg"
+require "dbg-rb"
 
-RubyDBG.color_code = 35 
+DbgRb.color_code = 35 
 # 31 red 
 # 32 green 
 # 33 yellow 
@@ -79,24 +79,24 @@ user = User.last.as_json.slice("id", "slack_id")
 dbg!("User last", :user)
 ```
 
-![Dbg color](https://github.com/pawurb/ruby-dbg/raw/main/dbg_base3.png)
+![Dbg color](https://github.com/pawurb/dbg-rb/raw/main/dbg_base3.png)
 
 If it does not stand out enough, you can enable `dbg!` highlighting:
 
-`config/initializers/ruby_dbg.rb`
+`config/initializers/dbg_rb.rb`
 ```ruby
-require "ruby-dbg"
+require "dbg-rb"
 
-RubyDBG.highlight!("🎉💔💣🕺🚀🧨🙈🤯🥳🌈🦄")
+DbgRb.highlight!("🎉💔💣🕺🚀🧨🙈🤯🥳🌈🦄")
 ```
 
-![Dbg emoji](https://github.com/pawurb/ruby-dbg/raw/main/dbg_emoji2.png)
+![Dbg emoji](https://github.com/pawurb/dbg-rb/raw/main/dbg_emoji2.png)
 
-You can also use `RubyDBG.dbg!(*msgs)` directly or wrap it to rename the helper method:
+You can also use `DbgRb.dbg!(*msgs)` directly or wrap it to rename the helper method:
 
 ```ruby
 def dd(*msgs)
-  RubyDBG.dbg!(*msgs)
+  DbgRb.dbg!(*msgs)
 end
 ```
 

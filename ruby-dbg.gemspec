@@ -1,16 +1,16 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "ruby_dbg/version"
+require "dbg_rb/version"
 
 Gem::Specification.new do |s|
-  s.name = "ruby-dbg"
-  s.version = RubyDBG::VERSION
+  s.name = "dbg-rb"
+  s.version = DbgRb::VERSION
   s.authors = ["pawurb"]
   s.email = ["contact@pawelurbanek.com"]
   s.summary = "Simple debuging helper"
   s.description = "Rust-inspired, puts debugging helper, adding caller info and optional coloring."
-  s.homepage = "http://github.com/pawurb/ruby-dbg"
+  s.homepage = "http://github.com/pawurb/dbg-rb"
   s.files = `git ls-files`.split("\n").reject { |f| f.match?(/\.db$/) }
   s.require_paths = ["lib"]
   s.license = "MIT"

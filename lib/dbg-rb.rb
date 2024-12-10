@@ -2,7 +2,7 @@
 
 require "binding_of_caller"
 
-module RubyDBG
+module DbgRb
   @@color_code = nil
   @@highlight = false
 
@@ -84,5 +84,5 @@ module RubyDBG
 end
 
 def dbg!(*msgs)
-  RubyDBG.dbg!(*msgs)
+  DbgRb.dbg!(*msgs)
 end

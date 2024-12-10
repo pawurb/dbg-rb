@@ -2,7 +2,7 @@
 
 require "rubygems"
 require "bundler/setup"
-require_relative "../lib/ruby-dbg"
+require_relative "../lib/dbg-rb"
 
 RSpec.configure do |config|
 end

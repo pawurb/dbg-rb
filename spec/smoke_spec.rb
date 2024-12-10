@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "ruby-dbg"
+require "dbg-rb"
 require "ostruct"
 
-describe RubyDBG do
+describe DbgRb do
   it "variable values" do
     expect { dbg!("123") }.to output("[spec/smoke_spec.rb:9] \"123\"\n").to_stdout
   end
@@ -39,12 +39,12 @@ describe RubyDBG do
   end
 
   it "higlight" do
-    RubyDBG.highlight!
+    DbgRb.highlight!
     expect { dbg!("123") }.to output("!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n[spec/smoke_spec.rb:43] \"123\"\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n").to_stdout
   end
 
   it "color_code" do
-    RubyDBG.color_code = 31
+    DbgRb.color_code = 31
     expect { dbg!(123) }.to output("\e[31m!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n[spec/smoke_spec.rb:48] 123\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\e[0m\n").to_stdout
   end
 end
