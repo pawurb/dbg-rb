@@ -47,4 +47,13 @@ describe DbgRb do
     DbgRb.color_code = 31
     expect { dbg!(123) }.to output("\e[31m!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n[spec/smoke_spec.rb:48] 123\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\e[0m\n").to_stdout
   end
+
+  it "alias" do
+    DbgRb.highlight!(false)
+    DbgRb.color_code = nil
+
+    expect {
+      dgb(123)
+    }.to output("[spec/smoke_spec.rb:56] 123\n").to_stdout
+  end
 end

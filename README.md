@@ -23,12 +23,12 @@ gem "dbg-rb"
 
 ## Usage
 
-Gem adds a global `dbg!` method that you can use for puts debugging:
+Gem adds global `dbg!` and `dbg` methods that you can use for puts debugging:
 
 ```ruby
 require "dbg-rb"
 
-dbg!(User.last.id)
+dbg(User.last.id)
 # [web/user_sessions_controller.rb:37] 1972
 
 ```
