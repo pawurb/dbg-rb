@@ -12,7 +12,7 @@ p '!!!!!!!!!!!!!!!'
 
 too many times already.
  
-`dbg!` is a minimal, [Rust inspired](https://doc.rust-lang.org/std/macro.dbg.html), *puts debugging* command for Ruby. It provides caller context and formatting helpful in everyday debugging tasks.
+`dbg` is a minimal, [Rust inspired](https://doc.rust-lang.org/std/macro.dbg.html), *puts debugging* command for Ruby. It provides caller context and formatting helpful in everyday debugging tasks.
 
 ## Installation
 
@@ -23,7 +23,7 @@ gem "dbg-rb"
 
 ## Usage
 
-Gem adds global `dbg!` and `dbg` methods that you can use for puts debugging:
+Gem adds a global `dbg` method that you can use for puts debugging:
 
 ```ruby
 require "dbg-rb"
@@ -41,7 +41,7 @@ You can use symbols to output local variable names together with their values:
 a = 1
 b = 2 
 
-dbg!(:a, :b)
+dbg(:a, :b)
 # [models/user.rb:22] a = 1
 # [models/user.rb:22] b = 2
 ```
@@ -50,7 +50,7 @@ Hash values are pretty printed:
 
 ```ruby
 user = User.last.as_json
-dbg!(:user)
+dbg(:user)
 # [web/users_controller.rb:10 user = {
 #   "id": 160111,
 #   "team_id": 1,
@@ -76,12 +76,12 @@ DbgRb.color_code = 35
 
 ```ruby
 user = User.last.as_json.slice("id", "slack_id")
-dbg!("User last", :user)
+dbg("User last", :user)
 ```
 
 ![Dbg color](https://github.com/pawurb/dbg-rb/raw/main/dbg_base3.png)
 
-If it does not stand out enough, you can enable `dbg!` highlighting:
+If it does not stand out enough, you can enable `dbg` highlighting:
 
 `config/initializers/dbg_rb.rb`
 ```ruby
