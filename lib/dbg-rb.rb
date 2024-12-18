@@ -101,4 +101,4 @@ def dbg!(*msgs)
   DbgRb.dbg!(*msgs)
 end
 
-alias dgb dbg!
+alias dbg dbg!
