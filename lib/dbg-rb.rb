@@ -45,11 +45,10 @@ module DbgRb
 
         val = if obj.is_a?(Symbol)
             begin
-              if (val = binding.of_caller(4).local_variable_get(obj))
-                val = format_val(val)
+              val = binding.of_caller(4).local_variable_get(obj)
+              val = format_val(val)
 
-                "#{obj} = #{val}"
-              end
+              "#{obj} = #{val}"
             rescue NameError
               ":#{obj}"
             end

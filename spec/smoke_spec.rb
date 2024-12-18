@@ -56,4 +56,9 @@ describe DbgRb do
       dbg(123)
     }.to output("[spec/smoke_spec.rb:56] 123\n").to_stdout
   end
+
+  it "binded nil variables" do
+    b = nil
+    expect { dbg(:b) }.to output("[spec/smoke_spec.rb:62] b = nil\n").to_stdout
+  end
 end
