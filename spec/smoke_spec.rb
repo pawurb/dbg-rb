@@ -6,17 +6,17 @@ require "ostruct"
 
 describe DbgRb do
   it "variable values" do
-    expect { dbg!("123") }.to output("[spec/smoke_spec.rb:9] \"123\"\n").to_stdout
+    expect { dbg("123") }.to output("[spec/smoke_spec.rb:9] \"123\"\n").to_stdout
   end
 
   it "binded variables" do
     b = 123
-    expect { dbg!(:b) }.to output("[spec/smoke_spec.rb:14] b = 123\n").to_stdout
+    expect { dbg(:b) }.to output("[spec/smoke_spec.rb:14] b = 123\n").to_stdout
   end
 
   it "missing binded variables" do
     b = 123
-    expect { dbg!(:c) }.to output("[spec/smoke_spec.rb:19] :c\n").to_stdout
+    expect { dbg(:c) }.to output("[spec/smoke_spec.rb:19] :c\n").to_stdout
   end
 
   it "complex objects" do
@@ -53,7 +53,7 @@ describe DbgRb do
     DbgRb.color_code = nil
 
     expect {
-      dgb(123)
+      dbg(123)
     }.to output("[spec/smoke_spec.rb:56] 123\n").to_stdout
   end
 end
