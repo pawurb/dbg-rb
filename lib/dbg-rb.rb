@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "binding_of_caller"
+require "json"
 
 module DbgRb
   def self.color_code=(val)
