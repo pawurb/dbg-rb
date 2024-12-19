@@ -101,4 +101,6 @@ def dbg!(*msgs)
   DbgRb.dbg!(*msgs)
 end
 
+DbgRb.color_code = 33 # yellow
+
 alias dbg dbg!

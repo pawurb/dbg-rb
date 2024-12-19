@@ -65,13 +65,19 @@ You can color the output:
 ```ruby
 require "dbg-rb"
 
-DbgRb.color_code = 35 
+DbgRb.color_code = 33 
 # 31 red 
 # 32 green 
 # 33 yellow 
 # 34 blue 
 # 35 pink 
 # 36 light blue
+```
+
+It's yellow by default. You can disable colors by running:
+
+```ruby
+DbgRb.color_code= nil
 ```
 
 ```ruby
