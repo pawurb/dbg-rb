@@ -77,7 +77,7 @@ DbgRb.color_code = 33
 It's yellow by default. You can disable colors by running:
 
 ```ruby
-DbgRb.color_code= nil
+DbgRb.color_code = nil
 ```
 
 ```ruby
