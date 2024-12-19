@@ -1,6 +1,6 @@
 # dbg! [![Gem Version](https://badge.fury.io/rb/dbg-rb.svg)](https://badge.fury.io/rb/dbg-rb) [![GH Actions](https://github.com/pawurb/dbg-rb/actions/workflows/ci.yml/badge.svg)](https://github.com/pawurb/dbg-rb/actions)
 
-![Dbg base](https://github.com/pawurb/dbg-rb/raw/main/dbg_base3.png)
+![Dbg base](https://github.com/pawurb/dbg-rb/raw/main/dbg_base.png)
  
 Because I wrote: 
 
@@ -85,7 +85,7 @@ user = User.last.as_json.slice("id", "slack_id")
 dbg("User last", :user)
 ```
 
-![Dbg color](https://github.com/pawurb/dbg-rb/raw/main/dbg_base3.png)
+![Dbg color](https://github.com/pawurb/dbg-rb/raw/main/dbg_base.png)
 
 If it does not stand out enough, you can enable `dbg` highlighting:
 
@@ -96,7 +96,7 @@ require "dbg-rb"
 DbgRb.highlight!("🎉💔💣🕺🚀🧨🙈🤯🥳🌈🦄")
 ```
 
-![Dbg emoji](https://github.com/pawurb/dbg-rb/raw/main/dbg_emoji2.png)
+![Dbg emoji](https://github.com/pawurb/dbg-rb/raw/main/dbg_emoji.png)
 
 You can also use `DbgRb.dbg!(*msgs)` directly or wrap it to rename the helper method:
 
