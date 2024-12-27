@@ -29,15 +29,14 @@ module DbgRb
     end
 
     def dbg!(*msgs)
-      loc = caller_locations.first(3).last.to_s
-      matching_loc = loc.match(/.+(rb)\:\d+\:(in)\s/)
-      src = if !matching_loc.nil?
-          matching_loc[0][0..-5]
+      loc = caller_locations.first(3).last
+      file = if (path = loc.absolute_path)
+          path.split("/").last(2).join("/")
         else
-          loc
+          loc.label
         end
-      file, line = src.split(":")
-      file = file.split("/").last(2).join("/")
+
+      line = loc.lineno
       src = "[#{file}:#{line}]"
 
       msgs.each_with_index do |obj, i|
