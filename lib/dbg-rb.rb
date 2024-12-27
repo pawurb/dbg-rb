@@ -51,7 +51,7 @@ module DbgRb
 
               "#{obj} = #{val}"
             rescue NameError
-              ":#{obj}"
+              obj.inspect
             end
           else
             format_val(obj)
@@ -79,19 +79,35 @@ module DbgRb
       nil
     end
 
+    private
+
     def colorize(str, color_code)
       "\e[#{color_code}m#{str}\e[0m"
     end
 
     def format_val(val)
-      if val.nil?
-        "nil"
-      elsif val.is_a?(String)
-        "\"#{val}\""
-      elsif val.is_a?(Hash) || val.is_a?(Array)
-        JSON.pretty_generate(val)
+      if val.is_a?(Hash)
+        res = val.map { |k, v| [k, dbg_inspect(v, quote_str: false)] }.to_h
+        JSON.pretty_generate(res)
+      elsif val.is_a?(Array)
+        JSON.pretty_generate(val.map do |v|
+          dbg_inspect(v, quote_str: false)
+        end)
       else
-        val
+        dbg_inspect(val, quote_str: true)
+      end
+    end
+
+    def dbg_inspect(obj, quote_str:)
+      if quote_str && obj.is_a?(String)
+        return obj.inspect
+      end
+
+      case obj
+      when Numeric, String
+        obj
+      else
+        obj.inspect
       end
     end
   end

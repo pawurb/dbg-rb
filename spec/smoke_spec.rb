@@ -65,4 +65,14 @@ describe DbgRb do
     b = nil
     expect { dbg(:b) }.to output("[spec/smoke_spec.rb:66] b = nil\n").to_stdout
   end
+
+  it "hashes" do
+    h = { a: 1, b: "2" }
+    expect { dbg!(h) }.to output("[spec/smoke_spec.rb:71] {\n  \"a\": 1,\n  \"b\": \"2\"\n}\n").to_stdout
+  end
+
+  it "arrays" do
+    a = [1, "str"]
+    expect { dbg!(a) }.to output("[spec/smoke_spec.rb:76] [\n  1,\n  \"str\"\n]\n").to_stdout
+  end
 end
