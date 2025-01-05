@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.version = DbgRb::VERSION
   s.authors = ["pawurb"]
   s.email = ["contact@pawelurbanek.com"]
-  s.summary = "Simple debuging helper"
+  s.summary = "Simple debugging helper"
   s.description = "Rust-inspired, puts debugging helper, adding caller info and optional coloring."
   s.homepage = "http://github.com/pawurb/dbg-rb"
   s.files = `git ls-files`.split("\n").reject { |f| f.match?(/\.db$/) }

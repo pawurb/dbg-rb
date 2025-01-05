@@ -42,7 +42,7 @@ describe DbgRb do
     expect { dbg!(nil) }.to output("[spec/smoke_spec.rb:42] nil\n").to_stdout
   end
 
-  it "higlight" do
+  it "highlight" do
     DbgRb.highlight!
     expect { dbg!("123") }.to output("!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n[spec/smoke_spec.rb:47] \"123\"\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n").to_stdout
   end
