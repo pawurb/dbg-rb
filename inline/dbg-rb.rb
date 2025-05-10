@@ -76,8 +76,8 @@ module DbgRb
     Impl.highlight!(wrapper)
   end
 
-  def self.dbg!(*msgs)
-    Impl.new.dbg!(*msgs)
+  def self.dbg(*msgs)
+    Impl.new.dbg(*msgs)
   end
 
   class Impl
@@ -92,7 +92,7 @@ module DbgRb
       @@highlight = wrapper
     end
 
-    def dbg!(*msgs)
+    def dbg(*msgs)
       loc = caller_locations.first(3).last
       file = if (path = loc.absolute_path)
           path.split("/").last(2).join("/")
@@ -176,10 +176,8 @@ module DbgRb
   end
 end
 
-def dbg!(*msgs)
-  DbgRb.dbg!(*msgs)
+def dbg(*msgs)
+  DbgRb.dbg(*msgs)
 end
 
 DbgRb.color_code = 33 # yellow
-
-alias dbg dbg!
