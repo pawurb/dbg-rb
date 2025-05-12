@@ -16,10 +16,9 @@ too many times already.
 
 ## Installation
 
-`Gemfile`
-```ruby
-gem "dbg-rb"
-```
+`bundle add dbg-rb`
+
+Alternatively, you can use an inline version of `dbg-rb` without adding it to the Gemfile. Check out [this post](https://pawelurbanek.com/rails-puts-debug#inline-setup) for info on how to do it.
 
 ## Usage
 
