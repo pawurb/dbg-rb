@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "binding_of_caller"
 require "json"
 
 module DbgRb
@@ -12,8 +11,8 @@ module DbgRb
     Impl.highlight!(wrapper)
   end
 
-  def self.dbg!(*msgs)
-    Impl.new.dbg!(*msgs)
+  def self.dbg(*msgs)
+    Impl.new.dbg(*msgs)
   end
 
   class Impl
@@ -28,54 +27,51 @@ module DbgRb
       @@highlight = wrapper
     end
 
-    def dbg!(*msgs)
+    def dbg(value)
       loc = caller_locations.first(3).last
-      file = if (path = loc.absolute_path)
+      source_file = if (path = loc.absolute_path)
           path.split("/").last(2).join("/")
         else
           loc.label
         end
 
-      line = loc.lineno
-      src = "[#{file}:#{line}]"
+      file = loc.absolute_path.split(":").first
 
-      msgs.each_with_index do |obj, i|
-        first = i == 0
-        last = i == (msgs.size - 1)
+      input = nil
 
-        val = if obj.is_a?(Symbol)
-            begin
-              val = binding.of_caller(4).local_variable_get(obj)
-              val = format_val(val)
-
-              "#{obj} = #{val}"
-            rescue NameError
-              obj.inspect
-            end
-          else
-            format_val(obj)
-          end
-
-        output = "#{src} #{val}"
-
-        if @@highlight
-          if first
-            output = "#{@@highlight}\n#{output}"
-          end
-
-          if last
-            output = "#{output}\n#{@@highlight}"
+      File.open(file) do |f|
+        f.each_line.with_index do |line, i|
+          if i == loc.lineno - 1
+            input = line.split("dbg").last.chomp.strip
+            input = input.gsub(/[()]/, "").strip
           end
         end
-
-        if @@color_code != nil
-          output = colorize(output, @@color_code)
-        end
-
-        puts output
       end
 
-      nil
+      if input.nil?
+        raise "It should never happen!"
+      end
+
+      line = loc.lineno
+      src = "[#{source_file}:#{line}]"
+      value = format_val(value)
+
+      val = if input.to_s == value.to_s
+          "#{value}"
+        else
+          "#{input} = #{value}"
+        end
+      output = "#{src} #{val}"
+
+      if @@highlight
+        output = "#{@@highlight}\n#{output}\n#{@@highlight}"
+      end
+
+      if @@color_code != nil
+        output = colorize(output, @@color_code)
+      end
+
+      puts output
     end
 
     private
@@ -112,10 +108,8 @@ module DbgRb
   end
 end
 
-def dbg!(*msgs)
-  DbgRb.dbg!(*msgs)
+def dbg(value)
+  DbgRb.dbg(value)
 end
 
 DbgRb.color_code = 33 # yellow
-
-alias dbg dbg!

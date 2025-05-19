@@ -14,7 +14,6 @@ Gem::Specification.new do |s|
   s.files = `git ls-files`.split("\n").reject { |f| f.match?(/\.db$/) }
   s.require_paths = ["lib"]
   s.license = "MIT"
-  s.add_dependency "binding_of_caller"
   s.add_dependency "json"
   s.add_development_dependency "ostruct"
   s.add_development_dependency "rake"
