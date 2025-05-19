@@ -90,6 +90,12 @@ module DbgRb
         end)
       else
         dbg_inspect(val, quote_str: true)
+      end.then do |value|
+        if value.is_a?(String)
+          value.gsub("\"nil\"", "nil")
+        else
+          value
+        end
       end
     end
 

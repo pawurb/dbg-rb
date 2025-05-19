@@ -77,18 +77,25 @@ describe DbgRb do
     end.to output("[spec/gem_spec.rb:76] a = [\n  1,\n  \"str\"\n]\n").to_stdout
   end
 
+  it "hash formatting" do
+    h = { a: 1, b: "2", c: nil }
+    expect do
+      dbg(h)
+    end.to output("[spec/gem_spec.rb:83] h = {\n  \"a\": 1,\n  \"b\": \"2\",\n  \"c\": nil\n}\n").to_stdout
+  end
+
   it "highlight" do
     DbgRb.highlight!
     expect do
       dbg("123")
-    end.to output("!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n[spec/gem_spec.rb:83] \"123\"\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n").to_stdout
+    end.to output("!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n[spec/gem_spec.rb:90] \"123\"\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n").to_stdout
   end
 
   it "color_code" do
     DbgRb.color_code = 31
     expect do
       dbg(123)
-    end.to output("\e[31m!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n[spec/gem_spec.rb:90] 123\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\e[0m\n").to_stdout
+    end.to output("\e[31m!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n[spec/gem_spec.rb:97] 123\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\e[0m\n").to_stdout
   end
 
   it "highlight and color_code" do
@@ -96,6 +103,6 @@ describe DbgRb do
     DbgRb.color_code = 31
     expect do
       dbg(123)
-    end.to output("\e[31m!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n[spec/gem_spec.rb:98] 123\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\e[0m\n").to_stdout
+    end.to output("\e[31m!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n[spec/gem_spec.rb:105] 123\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!\e[0m\n").to_stdout
   end
 end
