@@ -35,13 +35,11 @@ module DbgRb
           loc.label
         end
 
-
       file = if (path = loc.absolute_path)
-        path.split(":").first
-      else
-        nil
-      end
-
+          path.split(":").first
+        else
+          nil
+        end
 
       input = nil
 
@@ -49,8 +47,14 @@ module DbgRb
         File.open(file) do |f|
           f.each_line.with_index do |line, i|
             if i == loc.lineno - 1
-              input = line.split("dbg").last.chomp.strip
-              input = input.gsub(/[()]/, "").strip
+              splitby, remove_parantheses = if line.include?("dbg(")
+                  ["dbg(", true]
+                else
+                  ["dbg ", false]
+                end
+              input = line.split(splitby).last.chomp.strip
+              input = input.sub(/\)[^)]*\z/, "") if remove_parantheses
+              input
             end
           end
         end
@@ -62,7 +66,7 @@ module DbgRb
       src = "[#{source_file}:#{line}]"
       value = format_val(value)
 
-      val = if input.to_s == value.to_s
+      val = if input.to_s == value.to_s || input.nil?
           "#{value}"
         else
           "#{input} = #{value}"

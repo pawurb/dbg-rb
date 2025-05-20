@@ -5,7 +5,7 @@ require "fileutils"
 FileUtils.cp("lib/dbg-rb.rb", "inline/dbg_rb.rb")
 
 license = <<~LICENSE
-# Source https://github.com/pawurb/dbg-rb
+  # Source https://github.com/pawurb/dbg-rb
 # The MIT License (MIT)
 
 # Copyright © Paweł Urbanek 2024
@@ -32,6 +32,6 @@ LICENSE
 
 File.write("inline/dbg_rb.rb", File.read("inline/dbg_rb.rb").sub(/\A# frozen_string_literal: true\n/, "# frozen_string_literal: true\n\n#{license}"))
 
-FileUtils.cp("spec/gem_spec.rb", "spec/inline_spec.rb")
+FileUtils.cp("spec/main_spec.rb", "spec/inline_spec.rb")
 
-File.write("spec/inline_spec.rb", File.read("spec/inline_spec.rb").gsub(/gem_spec/, "inline_spec").gsub("require \"dbg-rb\"", "require_relative '../inline/dbg_rb'"))
+File.write("spec/inline_spec.rb", File.read("spec/inline_spec.rb").gsub(/main_spec/, "inline_spec").gsub("require \"dbg-rb\"", "require_relative '../inline/dbg_rb'"))
