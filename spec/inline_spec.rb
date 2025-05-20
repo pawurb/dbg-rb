@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "dbg-rb"
+require_relative '../inline/dbg_rb'
 require "ostruct"
 
 describe DbgRb do

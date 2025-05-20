@@ -35,21 +35,27 @@ module DbgRb
           loc.label
         end
 
-      file = loc.absolute_path.split(":").first
+
+      file = if (path = loc.absolute_path)
+        path.split(":").first
+      else
+        nil
+      end
+
 
       input = nil
 
-      File.open(file) do |f|
-        f.each_line.with_index do |line, i|
-          if i == loc.lineno - 1
-            input = line.split("dbg").last.chomp.strip
-            input = input.gsub(/[()]/, "").strip
+      if file
+        File.open(file) do |f|
+          f.each_line.with_index do |line, i|
+            if i == loc.lineno - 1
+              input = line.split("dbg").last.chomp.strip
+              input = input.gsub(/[()]/, "").strip
+            end
           end
         end
-      end
-
-      if input.nil?
-        raise "It should never happen!"
+      else
+        input = nil
       end
 
       line = loc.lineno
