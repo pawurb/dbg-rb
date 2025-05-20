@@ -1,6 +1,6 @@
 # dbg [![Gem Version](https://badge.fury.io/rb/dbg-rb.svg)](https://badge.fury.io/rb/dbg-rb) [![GH Actions](https://github.com/pawurb/dbg-rb/actions/workflows/ci.yml/badge.svg)](https://github.com/pawurb/dbg-rb/actions)
 
-![Dbg base](https://github.com/pawurb/dbg-rb/raw/main/dbg_base.png)
+![Dbg base](https://github.com/pawurb/dbg-rb/raw/main/dbg_base2.png)
  
 Because I wrote: 
 
@@ -28,29 +28,18 @@ Gem adds a global `dbg` method that you can use for puts debugging:
 require "dbg-rb"
 
 dbg(User.last.id)
-# [web/user_sessions_controller.rb:37] 1972
+# [web/user_sessions_controller.rb:37] User.last.id = 1972
 
 ```
 
-It appends a caller file and line info to the debug output.
-
-You can use symbols to output local variable names together with their values:
-
-```ruby
-a = 1
-b = 2 
-
-dbg(:a, :b)
-# [models/user.rb:22] a = 1
-# [models/user.rb:22] b = 2
-```
+It appends a caller file, line info and source expression to the debug output.
 
 Hash values are pretty printed:
 
 ```ruby
-user = User.last.as_json
-dbg(:user)
-# [web/users_controller.rb:10 user = {
+
+dbg(User.last.as_json)
+# [web/users_controller.rb:10] User.last.as_json = {
 #   "id": 160111,
 #   "team_id": 1,
 #   "pseudonym": "Anonymous-CBWE",
@@ -80,11 +69,10 @@ DbgRb.color_code = nil
 ```
 
 ```ruby
-user = User.last.as_json.slice("id", "slack_id")
-dbg("User last", :user)
+dbg(User.last(2).map(&:as_json))
 ```
 
-![Dbg color](https://github.com/pawurb/dbg-rb/raw/main/dbg_base.png)
+![Dbg color](https://github.com/pawurb/dbg-rb/raw/main/dbg_base2.png)
 
 If it does not stand out enough, you can enable `dbg` highlighting:
 
