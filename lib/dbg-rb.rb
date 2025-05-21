@@ -36,7 +36,7 @@ module DbgRb
         end
 
       file = if (path = loc.absolute_path)
-          path.split(":").first
+          path
         else
           nil
         end
