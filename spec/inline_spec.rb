@@ -116,4 +116,12 @@ describe DbgRb do
       dbg [1, 2, 3].reduce(0) { |i, agg| agg + i }
     end.to output("[spec/inline_spec.rb:116] [1, 2, 3].reduce(0) { |i, agg| agg + i } = 6\n").to_stdout
   end
+
+  it "binary input" do
+    random_bytes = Random.new.bytes(8)
+
+    expect do
+      dbg(random_bytes)
+    end.not_to raise_error
+  end
 end

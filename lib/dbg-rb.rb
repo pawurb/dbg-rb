@@ -115,8 +115,15 @@ module DbgRb
       end
 
       case obj
-      when Numeric, String
+      when Numeric
         obj
+      when String
+        # Handle binary strings by showing their hex representation
+        if obj.encoding == Encoding::ASCII_8BIT
+          obj.bytes.map { |b| "\\x#{b.to_s(16).rjust(2, '0')}" }.join
+        else
+          obj
+        end
       else
         obj.inspect
       end
