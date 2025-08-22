@@ -35,13 +35,27 @@ module DbgRb
     Impl.highlight!(wrapper)
   end
 
+  def self.logger=(val)
+    Impl.logger = val
+  end
+
+  def self.log_level=(val)
+    Impl.log_level = val
+  end
+
   def self.dbg(*msgs)
     Impl.new.dbg(*msgs)
+  end
+
+  def self.lbg(*msgs)
+    Impl.new.lbg(*msgs)
   end
 
   class Impl
     @@color_code = nil
     @@highlight = false
+    @@logger = defined?(Rails) ? Rails.logger : nil
+    @@log_level = :debug
 
     def self.color_code=(val)
       @@color_code = val
@@ -51,8 +65,16 @@ module DbgRb
       @@highlight = wrapper
     end
 
-    def dbg(value)
-      loc = caller_locations.first(3).last
+    def self.logger=(val)
+      @@logger = val
+    end
+
+    def self.log_level=(val)
+      @@log_level = val
+    end
+
+    def dbg_base(value)
+      loc = caller_locations.first(4).last
       source_file = if (path = loc.absolute_path)
           path.split("/").last(2).join("/")
         else
@@ -71,7 +93,11 @@ module DbgRb
         File.open(file) do |f|
           f.each_line.with_index do |line, i|
             if i == loc.lineno - 1
-              splitby, remove_parantheses = if line.include?("dbg(")
+              splitby, remove_parantheses = if line.include?("lbg(")
+                  ["lbg(", true]
+                elsif line.include?("lbg ")
+                  ["lbg ", false]
+                elsif line.include?("dbg(")
                   ["dbg(", true]
                 else
                   ["dbg ", false]
@@ -104,8 +130,20 @@ module DbgRb
       if @@color_code != nil
         output = colorize(output, @@color_code)
       end
+      
+      output
+    end
 
-      puts output
+    def dbg(value)
+      puts dbg_base(value)
+    end
+
+    def lbg(value)
+      if @@logger.nil?
+        puts dbg_base(value)
+      else
+        @@logger.send(@@log_level, dbg_base(value))
+      end
     end
 
     private
@@ -157,6 +195,10 @@ end
 
 def dbg(value)
   DbgRb.dbg(value)
+end
+
+def lbg(value)
+  DbgRb.lbg(value)
 end
 
 DbgRb.color_code = 33 # yellow

@@ -124,4 +124,99 @@ describe DbgRb do
       dbg(random_bytes)
     end.not_to raise_error
   end
+
+  describe "lbg" do
+    let(:mock_logger) do
+      Class.new do
+        attr_reader :logged_messages, :logged_levels
+
+        def initialize
+          @logged_messages = []
+          @logged_levels = []
+        end
+
+        def debug(message)
+          @logged_levels << :debug
+          @logged_messages << message
+        end
+
+        def info(message)
+          @logged_levels << :info
+          @logged_messages << message
+        end
+
+        def warn(message)
+          @logged_levels << :warn
+          @logged_messages << message
+        end
+
+        def error(message)
+          @logged_levels << :error
+          @logged_messages << message
+        end
+      end.new
+    end
+
+    before do
+      DbgRb.logger = nil
+      DbgRb.log_level = :debug
+    end
+
+    it "falls back to dbg when no logger is configured" do
+      expect do
+        lbg("test")
+      end.to output("[spec/main_spec.rb:167] \"test\"\n").to_stdout
+    end
+
+    it "uses logger when configured" do
+      DbgRb.logger = mock_logger
+
+      lbg("test message")
+
+      expect(mock_logger.logged_messages).to eq(["[spec/main_spec.rb:174] \"test message\""])
+      expect(mock_logger.logged_levels).to eq([:debug])
+    end
+
+    it "uses custom log level" do
+      DbgRb.logger = mock_logger
+      DbgRb.log_level = :info
+
+      lbg("test message")
+
+      expect(mock_logger.logged_messages).to eq(["[spec/main_spec.rb:184] \"test message\""])
+      expect(mock_logger.logged_levels).to eq([:info])
+    end
+
+    it "logs variables with logger" do
+      DbgRb.logger = mock_logger
+      test_var = 42
+
+      lbg(test_var)
+
+      expect(mock_logger.logged_messages).to eq(["[spec/main_spec.rb:194] test_var = 42"])
+      expect(mock_logger.logged_levels).to eq([:debug])
+    end
+
+    it "logs complex objects with logger" do
+      DbgRb.logger = mock_logger
+      test_hash = { a: 1, b: "test" }
+
+      lbg(test_hash)
+
+      expected_message = "[spec/main_spec.rb:204] test_hash = {\n  \"a\": 1,\n  \"b\": \"test\"\n}"
+      expect(mock_logger.logged_messages).to eq([expected_message])
+      expect(mock_logger.logged_levels).to eq([:debug])
+    end
+
+    it "respects color and highlight settings with logger" do
+      DbgRb.logger = mock_logger
+      DbgRb.color_code = 31
+      DbgRb.highlight!("!!!")
+
+      lbg("styled")
+
+      expected_message = "\e[31m!!!\n[spec/main_spec.rb:216] \"styled\"\n!!!\e[0m"
+      expect(mock_logger.logged_messages).to eq([expected_message])
+    end
+  end
 end

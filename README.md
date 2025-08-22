@@ -34,6 +34,7 @@ dbg(User.last.id)
 
 It appends a caller file, line info and source expression to the debug output.
 
+
 Hash values are pretty printed:
 
 ```ruby
@@ -84,6 +85,31 @@ DbgRb.highlight!("🎉💔💣🕺🚀🧨🙈🤯🥳🌈🦄")
 ```
 
 ![Dbg emoji](https://github.com/pawurb/dbg-rb/raw/main/dbg_emoji.png)
+
+## Logs integration
+
+![Lbg logs](https://github.com/pawurb/dbg-rb/raw/main/lbg_logs.png)
+
+Use `lbg` to send debug output through a logger instead of `stdio`:
+
+```ruby
+require "dbg-rb"
+
+lbg(User.last.id)
+# Sends to Rails.logger.debug: [web/user_sessions_controller.rb:37] User.last.id = 1972
+```
+
+The `lbg` method:
+- Uses `Rails.logger` by default when Rails is available
+- Falls back to regular `dbg` behavior if no logger is configured
+- Uses `:debug` log level by default
+
+You can configure a custom logger and log level:
+
+```ruby
+DbgRb.logger = MyLogger.new
+DbgRb.log_level = :info
+```
 
 ## Status
 
